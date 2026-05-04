@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura Essence – Tu experiencia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A96E;
+    --gold-light: #E8D5A8;
+    --gold-dim: rgba(201,169,110,0.15);
+    --dark: #0D0D0D;
+    --dark2: #161616;
+    --dark3: #1F1F1F;
+    --text: #E8E0D0;
+    --text-muted: #8A8070;
+    --border: rgba(201,169,110,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Atmospheric background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,169,110,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 100% 100%, rgba(201,169,110,0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Grain texture */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 560px;
+    position: relative;
+    z-index: 1;
+    animation: fadeUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .logo-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .logo-line::before,
+  .logo-line::after {
+    content: '';
+    height: 1px;
+    width: 40px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+  .logo-line::after { background: linear-gradient(to left, transparent, var(--gold)); }
+
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 6vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 0.75rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* Card */
+  .card {
+    background: var(--dark2);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  /* Section label */
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Stars rating */
+  .stars-wrapper {
+    margin-bottom: 2rem;
+  }
+
+  .stars-row {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .star-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .star-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    min-width: 130px;
+  }
+
+  .stars {
+    display: flex;
+    gap: 6px;
+  }
+
+  .stars input[type="radio"] { display: none; }
+
+  .stars label {
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: var(--dark3);
+    transition: color 0.15s, transform 0.15s;
+    line-height: 1;
+    -webkit-text-stroke: 1px rgba(201,169,110,0.3);
+  }
+
+  .stars:has(input:checked) label,
+  .stars label:hover,
+  .stars label:hover ~ label { color: var(--dark3); }
+
+  .stars input:checked ~ label,
+  .stars label:hover { color: var(--gold) !important; -webkit-text-stroke: 1px var(--gold); }
+
+  .stars label:hover { transform: scale(1.15); }
+
+  /* Fragrance selector */
+  .fragancias-wrapper { margin-bottom: 2rem; }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .chips input[type="radio"] { display: none; }
+
+  .chips label {
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .chips input:checked + label,
+  .chips label:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-dim);
+  }
+
+  /* Textarea */
+  .comment-wrapper { margin-bottom: 2rem; }
+
+  textarea {
+    width: 100%;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 1rem;
+    color: var(--text);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    resize: none;
+    height: 100px;
+    outline: none;
+    transition: border-color 0.25s;
+  }
+
+  textarea::placeholder { color: var(--text-muted); }
+
+  textarea:focus { border-color: rgba(201,169,110,0.5); }
+
+  /* Radio group (recompra / recomendación) */
+  .binary-group {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .binary-group input[type="radio"] { display: none; }
+
+  .binary-group label {
+    flex: 1;
+    text-align: center;
+    padding: 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .binary-group input:checked + label {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-dim);
+  }
+
+  /* Submit */
+  button[type="submit"] {
+    width: 100%;
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+  }
+
+  button[type="submit"]:hover::before { transform: translateX(0); }
+
+  button[type="submit"]:hover { color: var(--dark); }
+
+  button[type="submit"] span { position: relative; z-index: 1; }
+
+  /* Thank you screen */
+  .thankyou {
+    display: none;
+    text-align: center;
+    padding: 3rem 1rem;
+    animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .thankyou.active { display: block; }
+
+  .thankyou-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  .thankyou h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .thankyou p {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .form-section { display: block; }
+  .form-section.hidden { display: none; }
+
+  /* Optional: email field */
+  input[type="email"] {
+    width: 100%;
+    background: var(--dark3);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 0.85rem 1rem;
+    color: var(--text);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    outline: none;
+    transition: border-color 0.25s;
+    margin-bottom: 2rem;
+  }
+
+  input[type="email"]::placeholder { color: var(--text-muted); }
+  input[type="email"]:focus { border-color: rgba(201,169,110,0.5); }
+
+  .privacy {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-top: -1.5rem;
+    margin-bottom: 2rem;
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="logo-line">
+      <span class="brand">Aura Essence</span>
+    </div>
+    <h1>Tu <em>experiencia,</em><br>nuestra guía</h1>
+    <p class="subtitle">Comparte tu opinión · 2 minutos</p>
+  </div>
+
+  <div class="card">
+
+    <!-- FORM -->
+    <div class="form-section" id="formSection">
+
+      <!-- VALORACIÓN GENERAL -->
+      <div class="stars-wrapper">
+        <div class="section-label">Valoración</div>
+        <div class="stars-row">
+
+          <div class="star-item">
+            <span class="star-label">Experiencia general</span>
+            <div class="stars" id="stars-general">
+              <input type="radio" name="general" id="g1" value="1"><label for="g1">★</label>
+              <input type="radio" name="general" id="g2" value="2"><label for="g2">★</label>
+              <input type="radio" name="general" id="g3" value="3"><label for="g3">★</label>
+              <input type="radio" name="general" id="g4" value="4"><label for="g4">★</label>
+              <input type="radio" name="general" id="g5" value="5"><label for="g5">★</label>
+            </div>
+          </div>
+
+          <div class="star-item">
+            <span class="star-label">Facilidad de uso</span>
+            <div class="stars">
+              <input type="radio" name="facilidad" id="f1" value="1"><label for="f1">★</label>
+              <input type="radio" name="facilidad" id="f2" value="2"><label for="f2">★</label>
+              <input type="radio" name="facilidad" id="f3" value="3"><label for="f3">★</label>
+              <input type="radio" name="facilidad" id="f4" value="4"><label for="f4">★</label>
+              <input type="radio" name="facilidad" id="f5" value="5"><label for="f5">★</label>
+            </div>
+          </div>
+
+          <div class="star-item">
+            <span class="star-label">Variedad de fragancias</span>
+            <div class="stars">
+              <input type="radio" name="variedad" id="v1" value="1"><label for="v1">★</label>
+              <input type="radio" name="variedad" id="v2" value="2"><label for="v2">★</label>
+              <input type="radio" name="variedad" id="v3" value="3"><label for="v3">★</label>
+              <input type="radio" name="variedad" id="v4" value="4"><label for="v4">★</label>
+              <input type="radio" name="variedad" id="v5" value="5"><label for="v5">★</label>
+            </div>
+          </div>
+
+          <div class="star-item">
+            <span class="star-label">Relación calidad-precio</span>
+            <div class="stars">
+              <input type="radio" name="precio" id="p1" value="1"><label for="p1">★</label>
+              <input type="radio" name="precio" id="p2" value="2"><label for="p2">★</label>
+              <input type="radio" name="precio" id="p3" value="3"><label for="p3">★</label>
+              <input type="radio" name="precio" id="p4" value="4"><label for="p4">★</label>
+              <input type="radio" name="precio" id="p5" value="5"><label for="p5">★</label>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- FRAGANCIA ELEGIDA -->
+      <div class="fragancias-wrapper">
+        <div class="section-label">Fragancia elegida</div>
+        <div class="chips">
+          <input type="radio" name="fragancia" id="fr1" value="floral"><label for="fr1">Floral</label>
+          <input type="radio" name="fragancia" id="fr2" value="amaderado"><label for="fr2">Amaderado</label>
+          <input type="radio" name="fragancia" id="fr3" value="oriental"><label for="fr3">Oriental</label>
+          <input type="radio" name="fragancia" id="fr4" value="fresco"><label for="fr4">Fresco</label>
+          <input type="radio" name="fragancia" id="fr5" value="citrico"><label for="fr5">Cítrico</label>
+          <input type="radio" name="fragancia" id="fr6" value="otra"><label for="fr6">Otra</label>
+          <input type="radio" name="fragancia" id="fr7" value="no_compre"><label for="fr7">Solo exploré</label>
+        </div>
+      </div>
+
+      <!-- ¿VOLVERÍAS? -->
+      <div>
+        <div class="section-label">¿Volverías a usar Aura Essence?</div>
+        <div class="binary-group">
+          <input type="radio" name="recompra" id="rc_si" value="si"><label for="rc_si">Sí, definitivamente</label>
+          <input type="radio" name="recompra" id="rc_tal" value="tal_vez"><label for="rc_tal">Tal vez</label>
+          <input type="radio" name="recompra" id="rc_no" value="no"><label for="rc_no">No por ahora</label>
+        </div>
+      </div>
+
+      <!-- ¿LO RECOMENDARÍAS? -->
+      <div>
+        <div class="section-label">¿Lo recomendarías a alguien?</div>
+        <div class="binary-group">
+          <input type="radio" name="recomendacion" id="re_si" value="si"><label for="re_si">Sí</label>
+          <input type="radio" name="recomendacion" id="re_no" value="no"><label for="re_no">No</label>
+        </div>
+      </div>
+
+      <!-- COMENTARIOS -->
+      <div class="comment-wrapper">
+        <div class="section-label">Comentarios libres</div>
+        <textarea id="comentario" placeholder="¿Qué mejorarías? ¿Qué te sorprendió? Cualquier detalle es valioso…"></textarea>
+      </div>
+
+      <!-- EMAIL (opcional) -->
+      <div>
+        <div class="section-label">Contacto <span style="color:var(--text-muted);font-size:0.6rem;letter-spacing:0.05em;text-transform:none;"> — opcional</span></div>
+        <input type="email" id="email" placeholder="tu@email.com">
+        <p class="privacy">Tu correo solo se usará para contactarte si deseas recibir novedades. No compartimos tu información.</p>
+      </div>
+
+      <button type="submit" onclick="enviarFormulario()">
+        <span>Enviar valoración</span>
+      </button>
+
+    </div>
+
+    <!-- THANK YOU -->
+    <div class="thankyou" id="thankYou">
+      <div class="thankyou-icon">✦</div>
+      <h2>Gracias por<br><em>tu tiempo</em></h2>
+      <p>Tu opinión nos ayuda a perfeccionar<br>cada detalle de la experiencia.</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Star rating fill fix (CSS :has fallback for older browsers)
+  document.querySelectorAll('.stars').forEach(group => {
+    const labels = group.querySelectorAll('label');
+    const inputs = group.querySelectorAll('input');
+
+    labels.forEach((label, i) => {
+      label.addEventListener('mouseenter', () => {
+        labels.forEach((l, j) => {
+          l.style.color = j <= i ? 'var(--gold)' : '';
+          l.style.webkitTextStroke = j <= i ? '1px var(--gold)' : '1px rgba(201,169,110,0.3)';
+        });
+      });
+
+      label.addEventListener('mouseleave', () => {
+        updateStars(group);
+      });
+    });
+
+    inputs.forEach(() => {
+      group.addEventListener('change', () => updateStars(group));
+    });
+  });
+
+  function updateStars(group) {
+    const inputs = group.querySelectorAll('input');
+    const labels = group.querySelectorAll('label');
+    let selected = -1;
+    inputs.forEach((inp, i) => { if (inp.checked) selected = i; });
+    labels.forEach((l, j) => {
+      l.style.color = j <= selected ? 'var(--gold)' : '';
+      l.style.webkitTextStroke = j <= selected ? '1px var(--gold)' : '1px rgba(201,169,110,0.3)';
+    });
+  }
+
+  // ─────────────────────────────────────────────────────────────
+  // 🔧 CONFIGURACIÓN — pega aquí la URL de tu Apps Script
+  // ─────────────────────────────────────────────────────────────
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwx29yuYUldVhueUeHHn9JIGMPcfnj4oSt9kUDy0ZtCwQxKs8RwrkCvCcL6XCy3odd6/exec";
+  // ─────────────────────────────────────────────────────────────
+
+  async function enviarFormulario() {
+    const btn = document.querySelector('button[type="submit"]');
+    const btnSpan = btn.querySelector('span');
+
+    // Recolectar datos
+    const data = {
+      timestamp:     new Date().toLocaleString('es-MX', { timeZone: 'America/Mexico_City' }),
+      general:       document.querySelector('input[name="general"]:checked')?.value || "Sin respuesta",
+      facilidad:     document.querySelector('input[name="facilidad"]:checked')?.value || "Sin respuesta",
+      variedad:      document.querySelector('input[name="variedad"]:checked')?.value || "Sin respuesta",
+      precio:        document.querySelector('input[name="precio"]:checked')?.value || "Sin respuesta",
+      fragancia:     document.querySelector('input[name="fragancia"]:checked')?.value || "Sin respuesta",
+      recompra:      document.querySelector('input[name="recompra"]:checked')?.value || "Sin respuesta",
+      recomendacion: document.querySelector('input[name="recomendacion"]:checked')?.value || "Sin respuesta",
+      comentario:    document.getElementById('comentario').value.trim() || "—",
+      email:         document.getElementById('email').value.trim() || "—"
+    };
+
+    // Validar mínimo: que haya calificado experiencia general
+    if (data.general === "Sin respuesta") {
+      btnSpan.textContent = "Califica al menos la experiencia ✦";
+      setTimeout(() => { btnSpan.textContent = "Enviar valoración"; }, 2500);
+      return;
+    }
+
+    // Estado de carga
+    btn.disabled = true;
+    btnSpan.textContent = "Enviando…";
+
+    try {
+      // Enviamos como URL params para evitar problemas de CORS con Apps Script
+      const params = new URLSearchParams(data);
+      await fetch(APPS_SCRIPT_URL + "?" + params.toString(), {
+        method: "GET",
+        mode: "no-cors"
+      });
+
+      // Mostrar pantalla de gracias
+      document.getElementById('formSection').classList.add('hidden');
+      document.getElementById('thankYou').classList.add('active');
+
+    } catch (err) {
+      btn.disabled = false;
+      btnSpan.textContent = "Error al enviar — intenta de nuevo";
+      console.error("Error:", err);
+      setTimeout(() => { btnSpan.textContent = "Enviar valoración"; }, 3000);
+    }
+  }
+</script>
+</body>
+</html>
