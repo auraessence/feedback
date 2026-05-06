@@ -202,14 +202,11 @@
     -webkit-text-stroke: 1px rgba(201,169,110,0.3);
   }
 
-  .stars:has(input:checked) label,
-  .stars label:hover,
-  .stars label:hover ~ label { color: var(--dark3); }
-
-  .stars input:checked ~ label,
-  .stars label:hover { color: var(--gold) !important; -webkit-text-stroke: 1px var(--gold); }
-
   .stars label:hover { transform: scale(1.15); }
+  .stars label.lit {
+    color: var(--gold) !important;
+    -webkit-text-stroke: 1px var(--gold) !important;
+  }
 
   /* Fragrance selector */
   .fragancias-wrapper { margin-bottom: 2rem; }
@@ -468,11 +465,12 @@
       <div class="fragancias-wrapper">
         <div class="section-label">Fragancia elegida</div>
         <div class="chips">
-          <input type="radio" name="fragancia" id="fr1" value="Sauvage Elixir Dior"><label for="fr1">Sauvage Elixir</label>
-          <input type="radio" name="fragancia" id="fr2" value="1 Million Elixir"><label for="fr2">1 Million Elixir</label>
-          <input type="radio" name="fragancia" id="fr3" value="Jadore Dior"><label for="fr3">J'adore</label>
-          <input type="radio" name="fragancia" id="fr4" value="Good Girl"><label for="fr4">Good Girl</label>
-          <input type="radio" name="fragancia" id="fr5" value="La vida es bella"><label for="fr5">La vida es bella</label>
+          <input type="radio" name="fragancia" id="fr1" value="floral"><label for="fr1">Floral</label>
+          <input type="radio" name="fragancia" id="fr2" value="amaderado"><label for="fr2">Amaderado</label>
+          <input type="radio" name="fragancia" id="fr3" value="oriental"><label for="fr3">Oriental</label>
+          <input type="radio" name="fragancia" id="fr4" value="fresco"><label for="fr4">Fresco</label>
+          <input type="radio" name="fragancia" id="fr5" value="citrico"><label for="fr5">Cítrico</label>
+          <input type="radio" name="fragancia" id="fr6" value="otra"><label for="fr6">Otra</label>
           <input type="radio" name="fragancia" id="fr7" value="no_compre"><label for="fr7">Solo exploré</label>
         </div>
       </div>
@@ -526,39 +524,41 @@
 </div>
 
 <script>
-  // Star rating fill fix (CSS :has fallback for older browsers)
+  // ── Sistema de estrellas ────────────────────────────────────────
   document.querySelectorAll('.stars').forEach(group => {
-    const labels = group.querySelectorAll('label');
-    const inputs = group.querySelectorAll('input');
+    const labels = Array.from(group.querySelectorAll('label'));
+    const inputs = Array.from(group.querySelectorAll('input'));
+    let selectedIndex = -1;
+
+    function resetLabels() {
+      labels.forEach((l, i) => {
+        l.classList.toggle('lit', i <= selectedIndex);
+        l.style.transform = '';
+      });
+    }
 
     labels.forEach((label, i) => {
+      // Hover: ilumina de 0 hasta i
       label.addEventListener('mouseenter', () => {
         labels.forEach((l, j) => {
-          l.style.color = j <= i ? 'var(--gold)' : '';
-          l.style.webkitTextStroke = j <= i ? '1px var(--gold)' : '1px rgba(201,169,110,0.3)';
+          l.classList.toggle('lit', j <= i);
         });
+        label.style.transform = 'scale(1.15)';
       });
 
+      // Al salir del hover vuelve al estado seleccionado
       label.addEventListener('mouseleave', () => {
-        updateStars(group);
+        resetLabels();
       });
-    });
 
-    inputs.forEach(() => {
-      group.addEventListener('change', () => updateStars(group));
+      // Click: guarda selección
+      label.addEventListener('click', () => {
+        selectedIndex = i;
+        inputs[i].checked = true;
+        resetLabels();
+      });
     });
   });
-
-  function updateStars(group) {
-    const inputs = group.querySelectorAll('input');
-    const labels = group.querySelectorAll('label');
-    let selected = -1;
-    inputs.forEach((inp, i) => { if (inp.checked) selected = i; });
-    labels.forEach((l, j) => {
-      l.style.color = j <= selected ? 'var(--gold)' : '';
-      l.style.webkitTextStroke = j <= selected ? '1px var(--gold)' : '1px rgba(201,169,110,0.3)';
-    });
-  }
 
   // ─────────────────────────────────────────────────────────────
   // 🔧 CONFIGURACIÓN — pega aquí la URL de tu Apps Script
