@@ -461,19 +461,6 @@
         </div>
       </div>
 
-      <!-- FRAGANCIA ELEGIDA -->
-      <div class="fragancias-wrapper">
-        <div class="section-label">Fragancia elegida</div>
-        <div class="chips">
-          <input type="radio" name="fragancia" id="fr1" value="floral"><label for="fr1">Floral</label>
-          <input type="radio" name="fragancia" id="fr2" value="amaderado"><label for="fr2">Amaderado</label>
-          <input type="radio" name="fragancia" id="fr3" value="oriental"><label for="fr3">Oriental</label>
-          <input type="radio" name="fragancia" id="fr4" value="fresco"><label for="fr4">Fresco</label>
-          <input type="radio" name="fragancia" id="fr5" value="citrico"><label for="fr5">Cítrico</label>
-          <input type="radio" name="fragancia" id="fr6" value="otra"><label for="fr6">Otra</label>
-          <input type="radio" name="fragancia" id="fr7" value="no_compre"><label for="fr7">Solo exploré</label>
-        </div>
-      </div>
 
       <!-- ¿VOLVERÍAS? -->
       <div>
@@ -577,7 +564,6 @@
       facilidad:     document.querySelector('input[name="facilidad"]:checked')?.value || "Sin respuesta",
       variedad:      document.querySelector('input[name="variedad"]:checked')?.value || "Sin respuesta",
       precio:        document.querySelector('input[name="precio"]:checked')?.value || "Sin respuesta",
-      fragancia:     document.querySelector('input[name="fragancia"]:checked')?.value || "Sin respuesta",
       recompra:      document.querySelector('input[name="recompra"]:checked')?.value || "Sin respuesta",
       recomendacion: document.querySelector('input[name="recomendacion"]:checked')?.value || "Sin respuesta",
       comentario:    document.getElementById('comentario').value.trim() || "—",
